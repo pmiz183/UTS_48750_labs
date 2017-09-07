@@ -20,6 +20,7 @@ results(1:number_of_ticks) = 0;
 dropped_calls(1:number_of_ticks) = 0;
 caller = 0;
 lost = 0;
+count = 0;
 
     
 
@@ -30,28 +31,34 @@ for i = 1:number_of_ticks
     %incoming call
     if randomGen(call_probability) == true
         for ii = 1:trunk_count
+            count = count +1;
             if all_trunks(ii).is_in_call == true
-                if isCallEnding(number_of_calls, observation_time, avg_call_duration) == True
+                if isCallEnding(number_of_calls, observation_time, avg_call_duration) == False
                 lost = lost +1;
-                end
-            else   
-             disp('Added caller');
-             caller = caller +1;
-             all_trunks(ii).startCall(); 
-             end
+                end 
+            else 
+                break
+             
+            end
+             
         end
+
+         all_trunks(count).startCall();
+         disp('Added caller');
+         caller = caller +1;
+         count =0;
     
     
     else
     %Check for ending calls even if there is no call incoming    
-    for ii = 1:trunk_count
-        if all_trunks(ii).is_in_call == true
-            if isCallEnding(number_of_calls, observation_time, avg_call_duration) == true
-                all_trunks(ii).endCall();
-                caller = caller -1;
+        for ii = 1:trunk_count
+            if all_trunks(ii).is_in_call == true
+                if isCallEnding(number_of_calls, observation_time, avg_call_duration) == true
+                    all_trunks(ii).endCall();
+                    caller = caller -1;
+                end
             end
         end
-    end
     end
     disp('people_in_calls');
     disp(caller);
