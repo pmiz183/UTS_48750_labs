@@ -8,7 +8,7 @@ avg_call_duration = 12;
 trunk_count = 30;
 observed_call_count = 50;
 number_of_ticks = max_time;
-observation_time = 1/60;
+observation_time = 1;
 
 %variables
 average_lines_in_use = 0.0;
@@ -24,38 +24,37 @@ count = 0;
 number_of_calls = 0;
 
 for i = 1:number_of_ticks
-    if randomGen(call_probability) == true
-       for ii = 1:trunk_count
-           count = count + 1;
-           if all_trunks(ii) == true
-                if isCallEnding(number_of_calls, observation_time, avg_call_duration) == false
-                    lost = lost + 1;
-                end
-           else
-               break;
-           end
-       end
-       
-       all_trunks(count) = true;
-       disp('Added caller');
-       caller = caller + 1;
-       count = 0;
-    else
-        for ii = 1:trunk_count
-            if all_trunks(ii) == true
-                if isCallEnding(number_of_calls, observation_time, avg_call_duration) == true
-                   all_trunks(ii) = false;
-                   caller = caller - 1;
-                end
+    number_of_calls = 0;
+    number_of_callers = 0;
+    for z = 1:trunk_count
+        if randomGen(call_probability) == true
+            number_of_callers = number_of_callers + 1; 
+        end
+        if all_trunks(z) == true
+            number_of_calls = number_of_calls + 1;
+        end
+    end
+    for x = 1:trunk_count
+        if all_trunks(x) == true
+            if isCallEnding(number_of_calls, observation_time, avg_call_duration) == false
+                all_trunks(x) = false;
+                number_of_calls = number_of_calls - 1;
             end
         end
     end
+    for ii = 1:trunk_count
+        if all_trunks(ii) == false && number_of_callers > 0
+            all_trunks(ii) = true;
+            number_of_calls = number_of_calls + 1;
+            number_of_callers = number_of_callers - 1;
+        end
+    end
     disp('people_in_calls');
-    disp(caller);
+    disp(number_of_calls);
     disp('Lost');
-    disp(lost);
-    results(i) = caller;
-    dropped_calls(i) = lost;
+    disp(number_of_callers);
+    results(i) = number_of_calls;
+    dropped_calls(i) = number_of_callers;
 end
 
 time(1:number_of_ticks) = 0;
