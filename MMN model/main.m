@@ -7,8 +7,8 @@ max_time = 30.0;
 avg_call_duration = 12;
 trunk_count = 30;
 observed_call_count = 50;
-number_of_ticks = max_time;
-observation_time = 1;
+number_of_ticks = max_time * 60;
+observation_time = 1/60;
 
 %variables
 average_lines_in_use = 0.0;
@@ -34,6 +34,7 @@ for i = 1:number_of_ticks
             number_of_calls = number_of_calls + 1;
         end
     end
+    
     for x = 1:trunk_count
         if all_trunks(x) == true
             if isCallEnding(number_of_calls, observation_time, avg_call_duration) == false
@@ -42,6 +43,7 @@ for i = 1:number_of_ticks
             end
         end
     end
+    
     for ii = 1:trunk_count
         if all_trunks(ii) == false && number_of_callers > 0
             all_trunks(ii) = true;
@@ -49,6 +51,7 @@ for i = 1:number_of_ticks
             number_of_callers = number_of_callers - 1;
         end
     end
+   
     disp('people_in_calls');
     disp(number_of_calls);
     disp('Lost');
