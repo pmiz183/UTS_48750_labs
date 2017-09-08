@@ -3,7 +3,6 @@
 call_probability = input('Enter the probability of a call: ');
 subscribers = 1000;
 holding_time = 12/60;
-current_calls_in_progress = input('Enter the number of call in progress: ');
 trunks = 30;
 GoS = 0;
 
@@ -12,7 +11,7 @@ calls = 0;
 lost = 0;
 k = 0;
 
-for j = 0:trunks
+for j = 0:100000
     while rand(1) > poisson(0,arrival_rate)
         calls = calls +1;
         k = k +1;
@@ -47,7 +46,7 @@ end
 
 %Poission Function
 function obs = t_obs(subscribers, call_probability)
-    obs = 0.1/subscribers * call_probability;
+    obs = (0.1)/(subscribers * call_probability);
 end
 
 %Probability of a call endin
