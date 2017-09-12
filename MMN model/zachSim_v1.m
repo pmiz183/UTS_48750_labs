@@ -1,4 +1,4 @@
-
+clear all;
 
 call_probability = input('Enter the probability of a call: ');
 subscribers = 1000;
