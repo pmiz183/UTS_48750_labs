@@ -10,10 +10,10 @@ arrival_rate = t_obs(subscribers, call_probability) * subscribers * call_probabi
 calls = 0;
 lost = 0;
 k = 0;
-results(1:100000) = 0;
-time(1:100000) = 0;
+results(1:18000) = 0;
+time(1:18000) = 0;
 
-for j = 1:100000
+for j = 1:18000
     while rand(1) > poisson(0,arrival_rate)
         calls = calls +1;
         k = k +1;
@@ -32,14 +32,14 @@ GoS = lost/calls;
 disp("GoS");
 disp(GoS);
     
-for i = 1:100000
+for i = 1:18000
    time(i) = i; 
 end
 
-plot(time, results),
+plot(time, results, 'r'),
 legend('Trunks Occupied')
-xlabel('Ticks'), ylabel('Count')
-title('Trunks occupied and dropped calls over time');
+xlabel('Observation Time'), ylabel('Count')
+title('Trunks occupied over time');
 
 %Poission Function
 function y = poisson(x,u)
